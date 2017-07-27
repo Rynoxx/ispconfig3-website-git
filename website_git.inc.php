@@ -1,5 +1,18 @@
 <?php
-/* @TODO Add a license*/
+/*
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 class website_git {
 	/**
@@ -70,121 +83,11 @@ done
 EOS;
 
 		$gitIgnore = <<<EOS
-# -----------------------------------------------------------------
-# .gitignore
-# Bare Minimum Git
-# http://ironco.de/bare-minimum-git/
-# ver 20170502
-#
-# From the root of your project run
-# curl -O https://gist.githubusercontent.com/salcode/10017553/raw/.gitignore
-# to download this file
-#
-# This file is tailored for a general web project, it
-# is NOT optimized for a WordPress project.  See
-# https://gist.github.com/salcode/b515f520d3f8207ecd04
-# for a WordPress specific .gitignore
-#
-# This file specifies intentionally untracked files to ignore
-# http://git-scm.com/docs/gitignore
-#
-# NOTES:
-# The purpose of gitignore files is to ensure that certain files not
-# tracked by Git remain untracked.
-#
-# To ignore uncommitted changes in a file that is already tracked,
-# use `git update-index --assume-unchanged`.
-#
-# To stop tracking a file that is currently tracked,
-# use `git rm --cached`
-#
-# Change Log:
-# 20170726 Ignore stats/
-# 20170502 unignore composer.lock
-# 20170502 ignore components loaded via Bower
-# 20150326 ignore jekyll build directory `/_site`
-# 20150324 Reorganized file to list ignores first and whitelisted last,
-#          change WordPress .gitignore link to preferred gist,
-#          add curl line for quick installation
-#          ignore composer files (vendor directory and lock file)
-# 20140606 Add .editorconfig as a tracked file
-# 20140418 remove explicit inclusion
-#          of readme.md (this is not an ignored file by default)
-# 20140407 Initially Published
-#
-# -----------------------------------------------------------------
-
-# ignore all files starting with . or ~
-.*
-~*
-
-# ignore node/grunt dependency directories
-node_modules/
-
-# ignore composer vendor directory
-/vendor
-
-# ignore components loaded via Bower
-/bower_components
-
-# ignore jekyll build directory
-/_site
-
-#ignore stats directory
 stats/
 
-# ignore OS generated files
-ehthumbs.db
-Thumbs.db
-
-# ignore Editor files
-*.sublime-project
-*.sublime-workspace
-*.komodoproject
-
-# ignore log files and databases
-*.log
-*.sql
-*.sqlite
-
-# ignore compiled files
-*.com
-*.class
-*.dll
-*.exe
-*.o
-*.so
-
-# ignore packaged files
-*.7z
-*.dmg
-*.gz
-*.iso
-*.jar
-*.rar
-*.tar
-*.zip
-
-# -------------------------
-# BEGIN Whitelisted Files
-# -------------------------
-
-# track these files, if they exist
-!.gitignore
-!.editorconfig
-!README.md
-!CHANGELOG.md
-!composer.json
-
-# track favicon files, if they exist
-!android-chrome-*.png
-!apple-touch-icon*.png
-!browserconfig.xml
-!favicon*.png
-!favicon*.ico
-!manifest.json
-!mstile-*.png
-!safari-pinned-tab.svg
+thumbs.db
+._*
+*.DS_Store
 EOS;
 
 		$docroot = "/" . trim($data['new']['document_root'], "/");
