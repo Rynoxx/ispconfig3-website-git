@@ -3,7 +3,7 @@
 This plugin creates a bare git repository for the web directory to allow clients to change their websites using only git.
 
 ## Installation ##
-To install, simply copy the website_git.inc.php to `/usr/local/ispconfig/server/plugins-available/` and symlink it to the plugins-enabled directory. Or just copy/paste the commands below.
+To install, simply copy the website_git.inc.php to `/usr/local/ispconfig/server/plugins-available/` and symlink it to the plugins-enabled directory. Or just copy/paste the commands below, you will need root or sudo to run them.
 ```
 git clone https://github.com/rynoxx/ispconfig3-website-git
 ln -s `pwd`/ispconfig3-website-git/website_git.inc.php /usr/local/ispconfig/server/plugins-available/
@@ -20,8 +20,8 @@ Match Group client*,!root,!sudo
 ```
 
 This ensures that ssh users in groups beginning with `client` (`clientX` being the default group for ISPConfig) are allowed to login using password, while making sure that the setting doesn't override your other settings for users in the root and sudo groups.  
-And don't forget to restart the SSHD service (`service sshd restart`) after saving the file.
-[More thorough information available **here**.](https://security.stackexchange.com/questions/18036/creating-user-specific-authentication-methods-in-ssh/18038#18038)
+And don't forget to restart the SSHD service (`service sshd restart`) after saving the file.  
+More thorough information about configuring `Match` in sshd_config available [**here**](https://security.stackexchange.com/questions/18036/creating-user-specific-authentication-methods-in-ssh/18038#18038) and [**here**](https://linux.die.net/man/5/sshd_config).
 
 ## Usage ##
 
@@ -31,5 +31,5 @@ And don't forget to restart the SSHD service (`service sshd restart`) after savi
 
 	I recommend using a specific name when you clone the repository, e.g. `git clone user1@example.com:/website.git example.com` would clone it into the `example.com` directory rather than a directory called `website`
 3. Edit the files, and create a new commit and simply push them using `git push`. Do note that **ONLY** the master branch gets updated on the server, pushing other branches does nothing.
-4. That's it! Go to the website and view the new changes you've made :tada:
-5. _And don't forget to `git pull` if you're multiple people working on the same website._
+4. That's it! Go to the website and view the new changes you've made :tada:  
+	_And don't forget to `git pull` if you're working on the same website from multiple devices._
