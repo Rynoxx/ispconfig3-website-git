@@ -1,5 +1,4 @@
 # ispconfig3-website-git #
-**Currently requires chroot (i.e. jailkit) for the shell users!**  
 This plugin creates a bare git repository for the web directory to allow clients to change their websites using only git.
 
 ## Installation ##
@@ -27,7 +26,9 @@ More thorough information about configuring `Match` in sshd_config available [**
 
 1. Create a site in ISPConfig and create a shell user attached to it.
 2. Clone the repository on whichever computer you want to work on the website files on.  
-	The git repository is located at `<username>@<hostname>:/website.git` the hostname can be either the hostname of the ISPConfig server or any other hostname pointing towards it. e.g. `git clone user1@example.com:/website.git`.  
+	The git repository is located at `<username>@<hostname>:/website.git` or `<username>@<hostname>:~/../../website.git`.  
+	The latter is needed when using NONE as the chroot environment (or the absolute path).  
+	The hostname can be either the hostname of the ISPConfig server or any other hostname pointing towards it. e.g. `git clone user1@example.com:/website.git`.  
 
 	I recommend using a specific name when you clone the repository, e.g. `git clone user1@example.com:/website.git example.com` would clone it into the `example.com` directory rather than a directory called `website`
 3. Edit the files, and create a new commit and simply push them using `git push`. Do note that **ONLY** the master branch gets updated on the server, pushing other branches does nothing.
