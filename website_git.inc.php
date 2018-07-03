@@ -66,6 +66,8 @@ class website_git {
 		$username = escapeshellcmd($data['new']['system_user']);
 		$groupname = escapeshellcmd($data['new']['system_group']);
 
+		$docroot = "/" . trim($data['new']['document_root'], "/");
+
 		$gitBinary = $this->_exec("which git"); //"/usr/bin/git";
 
 		$gitHook = <<<EOS
@@ -75,7 +77,7 @@ do
 	if [[ \$refname =~ .*/master\$ ]];
 	then
 		echo "Master received.  Deploying master branch to production..."
-		git --work-tree=/web --git-dir=/website.git checkout -f
+		git --work-tree=$docroot/web --git-dir=$docroot/website.git checkout -f
 	else
 		echo "Ref \$refname successfully received.  Doing nothing: only the master branch may be deployed on this server."
 	fi
@@ -89,8 +91,6 @@ thumbs.db
 ._*
 *.DS_Store
 EOS;
-
-		$docroot = "/" . trim($data['new']['document_root'], "/");
 
 		$app->system->web_folder_protection($data['new']['document_root'],false);
 
@@ -109,6 +109,12 @@ EOS;
 			$this->_exec($gitBinary . ' --work-tree=' . escapeshellarg($docroot . "/web") . ' --git-dir=' . escapeshellarg($docroot . "/website.git") . ' add -A');
 			$this->_exec($gitBinary . ' --work-tree=' . escapeshellarg($docroot . "/web") . ' --git-dir=' . escapeshellarg($docroot . "/website.git") . ' commit -m "Initial commit"');
 			//$this->_exec($gitBinary . ' --work-tree=' . escapeshellarg($docroot . "/web") . ' --git-dir=' . escapeshellarg($docroot . "/website.git") . ' config core.worktree "/web"');
+		}
+
+		if(!@is_dir($docroot.'/'.$docroot)){
+			$app->system->mkdirpath($docroot.'/'.$docroot, 0711, $username, $groupname);
+			$app->system->create_relative_link($docroot . '/web', $docroot . '/' . $docroot . '/web');
+			$app->system->create_relative_link($docroot . '/website.git', $docroot . '/' . $docroot . '/website.git');
 		}
 
 		$this->_exec($gitBinary . ' --work-tree=' . escapeshellarg($docroot . "/web") . ' --git-dir=' . escapeshellarg($docroot . "/website.git") . ' config user.name "' . escapeshellarg($username) . '"');
