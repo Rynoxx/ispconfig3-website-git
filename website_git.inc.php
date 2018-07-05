@@ -111,10 +111,10 @@ EOS;
 			//$this->_exec($gitBinary . ' --work-tree=' . escapeshellarg($docroot . "/web") . ' --git-dir=' . escapeshellarg($docroot . "/website.git") . ' config core.worktree "/web"');
 		}
 
-		if(!@is_dir($docroot.'/'.$docroot)){
-			$app->system->mkdirpath($docroot.'/'.$docroot, 0711, $username, $groupname);
-			$app->system->create_relative_link($docroot . '/web', $docroot . '/' . $docroot . '/web');
-			$app->system->create_relative_link($docroot . '/website.git', $docroot . '/' . $docroot . '/website.git');
+		if(!@is_dir($docroot . $docroot)){
+			$app->system->mkdirpath($docroot . $docroot, 0711, $username, $groupname);
+			$app->system->create_relative_link($docroot . '/web', $docroot . $docroot . '/web');
+			$app->system->create_relative_link($docroot . '/website.git', $docroot . $docroot . '/website.git');
 		}
 
 		$this->_exec($gitBinary . ' --work-tree=' . escapeshellarg($docroot . "/web") . ' --git-dir=' . escapeshellarg($docroot . "/website.git") . ' config user.name "' . escapeshellarg($username) . '"');
