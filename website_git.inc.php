@@ -112,7 +112,7 @@ EOS;
 		}
 
 		if(!@is_dir($docroot . $docroot)){
-			$app->system->mkdirpath($docroot . $docroot, 0711, 'root', 'root');
+			$app->system->mkdirpath($docroot . $docroot, 0755, 'root', 'root');
 			$app->system->create_relative_link($docroot . '/web', $docroot . $docroot . '/web');
 			$app->system->create_relative_link($docroot . '/website.git', $docroot . $docroot . '/website.git');
 		}
