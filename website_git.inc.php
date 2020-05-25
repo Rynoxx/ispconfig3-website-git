@@ -106,8 +106,8 @@ EOS;
 			$app->system->chown($docroot.'/web/.gitignore', $username);
 			$app->system->chgrp($docroot.'/web/.gitignore', $groupname);
 
-			$this->_exec($gitBinary . ' --work-tree=' . escapeshellarg($docroot . "/web") . ' --git-dir=' . escapeshellarg($docroot . "/website.git") . ' add -A');
-			$this->_exec($gitBinary . ' --work-tree=' . escapeshellarg($docroot . "/web") . ' --git-dir=' . escapeshellarg($docroot . "/website.git") . ' commit -m "Initial commit"');
+			//$this->_exec($gitBinary . ' --work-tree=' . escapeshellarg($docroot . "/web") . ' --git-dir=' . escapeshellarg($docroot . "/website.git") . ' add -A');
+			//$this->_exec($gitBinary . ' --work-tree=' . escapeshellarg($docroot . "/web") . ' --git-dir=' . escapeshellarg($docroot . "/website.git") . ' commit -m "Initial commit"');
 			//$this->_exec($gitBinary . ' --work-tree=' . escapeshellarg($docroot . "/web") . ' --git-dir=' . escapeshellarg($docroot . "/website.git") . ' config core.worktree "/web"');
 		}
 
