@@ -67,10 +67,11 @@ class website_git {
 		$groupname = escapeshellcmd($data['new']['system_group']);
 
 		$docroot = "/" . trim($data['new']['document_root'], "/");
+		$gitHookRoot = $docroot . '/githooks';
 
 		$gitBinary = $this->_exec("which git"); //"/usr/bin/git";
 
-		$gitHook = <<<EOS
+		$gitHookContent = <<<EOS
 #!/bin/bash
 while read oldrev newrev refname
 do
@@ -84,6 +85,9 @@ do
 done
 EOS;
 
+		$gitHookFile = $gitHookRoot . '/post-receive';
+		$gitHookSymLink = $docroot.'/website.git/hooks/post-receive';
+
 		$gitIgnore = <<<EOS
 stats/
 
@@ -93,6 +97,16 @@ thumbs.db
 EOS;
 
 		$app->system->web_folder_protection($data['new']['document_root'],false);
+		if ( !@is_dir($gitHookRoot) ) {
+			$app->system->mkdirpath($gitHookRoot, 0751, $username, $groupname);
+		}
+
+		if (!@is_file($gitHookFile)) {
+			$app->system->file_put_contents($gitHookFile, $gitHookContent);
+			$app->system->chmod($gitHookFile, 0755);
+			$app->system->chown($gitHookFile, $username);
+			$app->system->chgrp($gitHookFile, $groupname);
+		}
 
 		if(!@is_dir($docroot.'/website.git')){
 			$this->_exec($gitBinary . ' --bare init ' . escapeshellarg($docroot . "/website.git") . '');
@@ -120,10 +134,9 @@ EOS;
 		$this->_exec($gitBinary . ' --work-tree=' . escapeshellarg($docroot . "/web") . ' --git-dir=' . escapeshellarg($docroot . "/website.git") . ' config user.name "' . escapeshellarg($username) . '"');
 		$this->_exec($gitBinary . ' --work-tree=' . escapeshellarg($docroot . "/web") . ' --git-dir=' . escapeshellarg($docroot . "/website.git") . ' config user.email "' . escapeshellarg($username . "@" . $groupname) . '"');
 
-		$app->system->file_put_contents($docroot.'/website.git/hooks/post-receive', $gitHook);
-		$app->system->chmod($docroot.'/website.git/hooks/post-receive', 0755);
-		$app->system->chown($docroot.'/website.git/hooks/post-receive', $username);
-		$app->system->chgrp($docroot.'/website.git/hooks/post-receive', $groupname);
+		if ( !@is_link( $gitHookSymLink ) ) {
+			$app->system->create_relative_link($gitHookFile, $gitHookSymLink);
+		}
 
 		$this->_exec("chown " . escapeshellarg($username) . ":" . escapeshellarg($groupname) . " " . escapeshellarg($docroot . "/website.git") . " -R");
 
