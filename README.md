@@ -3,7 +3,7 @@ This plugin creates a bare git repository for the web directory to allow clients
 
 ## Installation ##
 To install, simply copy the website_git.inc.php to `/usr/local/ispconfig/server/plugins-available/` and symlink it to the plugins-enabled directory. Or just copy/paste the commands below, you will need root or sudo to run them.
-```
+```bash
 git clone https://github.com/rynoxx/ispconfig3-website-git
 ln -s `pwd`/ispconfig3-website-git/website_git.inc.php /usr/local/ispconfig/server/plugins-available/
 ln -s /usr/local/ispconfig/server/plugins-available/website_git.inc.php /usr/local/ispconfig/server/plugins-enabled/
@@ -34,3 +34,29 @@ More thorough information about configuring `Match` in sshd_config available [**
 3. Edit the files, and create a new commit and simply push them using `git push`. Do note that **ONLY** the master branch gets updated on the server, pushing other branches does nothing.
 4. That's it! Go to the website and view the new changes you've made :tada:  
 	_And don't forget to `git pull` if you're working on the same website from multiple devices._
+
+
+## Commit "local" changes on the server ##
+
+To commit changes made locally on the server (i.e. config changes or plugin updates made by the installed software, such as WordPress) run the following command:  
+```bash
+cd ~ && git --git-dir=/website.git --work-tree=/web add /web/. && git --git-dir=/website.git --work-tree=/web commit -a -m "File changes after web update"
+```
+
+The above command assumes Jailkit as the chroot environment. If NONE is used, replace all path names with the absolute path (just like in the usage example).
+
+Breakdown of the command:
+```bash
+cd ~ &&
+# Change directory to home directory, this will be the directory above /web
+
+git --git-dir=/website.git --work-tree=/web add /web/. &&
+# Add all files in the /web/ directory to the list of files to be committed. (files in .gitignore will not be added)  
+# --git-dir sets the directory which contains all the git-data (not the actual website files)  
+# --work-tree sets the "root directory" of the git repository, i.e the website files  
+
+git --git-dir=/website.git --work-tree=/web commit -a -m "File changes after web update"
+# Commit the files added above
+```
+
+Thanks to @eric-cs for submitting the how-to for committing local changes
